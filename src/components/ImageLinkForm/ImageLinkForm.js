@@ -2,9 +2,9 @@ import React from 'react';
 
 const ImageLinkForm = () => {
   return(
-    <nav>
+    <div>
       ImageLinkForm<br /><br /><br /><br /><br />
-    </nav>
+    </div>
   );
 }
 

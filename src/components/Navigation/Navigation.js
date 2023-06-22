@@ -3,7 +3,10 @@ import React from 'react';
 const Navigation = () => {
   return(
     <nav>
-      Navigation<br /><br /><br /><br /><br />
+      {/* TODO Make into button, does signout functionality */}
+      <p className='f3 link dim black pa3 underline pointer'>
+        Sign Out
+      </p>
     </nav>
   );
 }

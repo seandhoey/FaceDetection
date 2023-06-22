@@ -2,9 +2,9 @@ import React from 'react';
 
 const FaceRecognition = () => {
   return(
-    <nav>
+    <div>
       FaceRecognition<br /><br /><br /><br /><br />
-    </nav>
+    </div>
   );
 }
 
