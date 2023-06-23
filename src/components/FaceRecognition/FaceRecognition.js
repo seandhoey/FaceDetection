@@ -2,8 +2,8 @@ import React from 'react';
 
 const FaceRecognition = () => {
   return(
-    <div>
-      FaceRecognition<br /><br /><br /><br /><br />
+    <div className='center mw5 mw7-ns mv2 mv4-ns bg-red'>
+      FaceRecognition
     </div>
   );
 }

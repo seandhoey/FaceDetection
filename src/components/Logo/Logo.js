@@ -4,12 +4,12 @@ import logo from './logo.png'
 
 const Logo = () => {
   return (
-    <div>
+    <div className='ma2 mt dib'>
       <Tilt>
         {/* TODO Make image a button. 
         On click, change background random gradient */}
         {/* TODO On click, make image transition spin around? */}
-        <img alt='Logo' style={{width:'150px'}} src={logo} />
+        <img alt='Logo' style={{width:'150px', cursor:'pointer'}} src={logo} />
       </Tilt>
     </div>
   );

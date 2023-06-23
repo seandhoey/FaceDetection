@@ -5,21 +5,23 @@ import Navigation from './components/Navigation/Navigation.js'
 import Logo from './components/Logo/Logo.js'
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm.js'
 import FaceRecognition from './components/FaceRecognition/FaceRecognition.js'
+import Rank from './components/Rank/Rank.js'
+
 
 function App() {
   return (
     <div>
-      <div className='flex'>
-        <div className='ma2 mt dib'>
-          <Logo />
-        </div>
-        <div className="navFlexSpacer"></div>
-        <div className='flex justify-end pr2'>
-          <Navigation />
-        </div>
-      </div>
-      <ImageLinkForm />
-      <FaceRecognition />
+      <header className='flex'>
+        <Logo />
+        <div style={{ flexGrow: '1' }} />
+        <Navigation />
+      </header>
+      <section>
+        <div style={{ height: '10vh' }} />
+        <Rank />
+        <ImageLinkForm />
+        <FaceRecognition />
+      </section>
     </div>
   );
 }
