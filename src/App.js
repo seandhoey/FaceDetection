@@ -15,7 +15,8 @@ class App extends React.Component {
     super()
     this.state = {
       input: '',
-      successURL: ''
+      imageURL: '',
+      boundingBoxes: []
     }
   }
 
@@ -43,6 +44,20 @@ class App extends React.Component {
     };
   }
 
+  calculateFaceLocation(box) {
+    const image = document.getElementById('inputImage');
+    console.log(image.width)
+    console.log(image.height)
+    console.log(box.right_col)
+    console.log(box.bottom_row)
+    return {
+      leftCol: Math.round(box.left_col * image.width),
+      topRow: Math.round(box.top_row * image.height),
+      rightCol: Math.round((box.right_col * image.width)),
+      bottomRow: Math.round((box.bottom_row * image.height))
+    }
+  }
+
   onInputChange = (event) => {
     // The second arg to setState executes once the asynchronous first part has completed
     // this.setState({ input: event.target.value }, () => console.log(this.state.input));
@@ -50,27 +65,28 @@ class App extends React.Component {
   }
 
   onSubmit = async () => {
-    // When button is clicked, clear image until we have a success
-    this.setState({ successURL: '' });
-
     const exts = ['.jpeg', '.jpg', '.png', '.tiff', '.bmp', '.webp'];
+    const url = this.state.input;
 
-    // If the URL does not contain an image extension, we render nothing
-    if (exts.some(v => this.state.input.toLowerCase().includes(v))) {
-      // TODO var url = this.state.input;
-      var url = 'https://samples.clarifai.com/metro-north.jpg';
-      const response = await fetch("https://api.clarifai.com/v2/models/face-detection/outputs", this.generateClarifaiRequest(url));
+    // Continue only if URL contains an image extension
+    if (exts.some(ext => url.toLowerCase().includes(ext))) {
+      const response = await fetch("https://api.clarifai.com/v2/models/face-detection/outputs", 
+        this.generateClarifaiRequest(url));
       const jsonResponse = await response.json();
-      // TODO check jsonRepsonse for success, then draw image regardless of bounding box
-      // TODO somehow use map function to grab all region objects and put into array
-      console.log(jsonResponse.outputs[0].data.regions[0].region_info.bounding_box);
-      // TODO update state with an array of bounding boxes?
-
-      // If api response is good, draw new image
-      // TODO: check actual api response, and pass image from response
-      if (true) {
-        this.setState({ successURL: url });
-      }
+      
+      // TODO check if valid image exists
+      // We set the image first, so we can reference its width & height
+      // The second arg to setState executes once the asynchronous first part has completed
+      this.setState({ imageURL: url }, () => {
+        // TODO check if bounding boxes exist
+        // For all bounding boxes found in the json, convert them into calculated objects and put into array
+        const boundingBoxes = jsonResponse.outputs[0].data.regions.map(region => { 
+          return this.calculateFaceLocation(region.region_info.bounding_box);
+        });
+        // TODO image load delay is causing bounding boxes not to calculate
+        // Pre-calc image width/height?
+        this.setState({ boundingBoxes: boundingBoxes });
+      });
     }
   }
 
@@ -85,8 +101,12 @@ class App extends React.Component {
         <section>
           <div style={{ height: '10vh' }} />
           <Rank />
-          <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
-          <FaceRecognition successURL={this.state.successURL} />
+          <ImageLinkForm
+            onInputChange={this.onInputChange}
+            onSubmit={this.onSubmit} />
+          <FaceRecognition
+            imageURL={this.state.imageURL} 
+            boundingBoxes={this.state.boundingBoxes} />
         </section>
       </div>
     );
