@@ -2,21 +2,12 @@ import React from 'react';
 import './faceRecognition.css';
 
 const FaceRecognition = ({ imageURL, boundingBoxes }) => {
-  // TODO remove temp test
-  console.log(boundingBoxes);
-  boundingBoxes[0] = {
-    topRow: 120,
-    rightCol: 120,
-    bottomRow: 130,
-    leftCol: 130
-  }
-
   return (
     <div className='flex justify-center mt4'>
       <div className='absolute '>
         {
           // If image not assigned, render nothing
-          imageURL === '' ? '' :
+          imageURL === '' ? <div /> :
             <img
               id='inputImage'
               alt='Face Detection'
@@ -25,16 +16,17 @@ const FaceRecognition = ({ imageURL, boundingBoxes }) => {
               height='auto' />
         }
         {
-          // If bounding boxes not found, render nothing
-          boundingBoxes.length === 0 ? '' :
-            <div
-              className='bounding-box'
-              style={{
-                top: boundingBoxes[0].topRow,
-                right: boundingBoxes[0].rightCol,
-                bottom: boundingBoxes[0].bottomRow,
-                left: boundingBoxes[0].leftCol
-              }} />
+          <div>
+            {/* Draw each bounding box that exists */}
+            {boundingBoxes.length === 0 ? <div /> :
+              boundingBoxes.map((box, i) => {
+                return (<div
+                  key={i}
+                  className='bounding-box'
+                  style={{ top: box.topRow, right: box.rightCol, bottom: box.bottomRow, left: box.leftCol }} />
+                );
+              })}
+          </div>
         }
       </div>
     </div>
