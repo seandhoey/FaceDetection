@@ -1,9 +1,15 @@
 import React from 'react';
 
-const FaceRecognition = () => {
-  return(
-    <div className='center mw5 mw7-ns mv2 mv4-ns bg-red'>
-      FaceRecognition
+const FaceRecognition = ({ successURL }) => {
+  if (successURL === '') {
+    return <div />;
+  }
+
+  return (
+    <div className='flex justify-center mt4'>
+      <div className='absolute '>
+        <img alt='Face Detection' src={successURL} width='500px' height='auto'/>
+      </div>
     </div>
   );
 }

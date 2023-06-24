@@ -4,7 +4,7 @@ import logo from './logo.png'
 
 const Logo = () => {
   return (
-    <div className='ma2 mt dib'>
+    <div className='ma2 dib'>
       <Tilt>
         {/* TODO Make image a button. 
         On click, change background random gradient */}
