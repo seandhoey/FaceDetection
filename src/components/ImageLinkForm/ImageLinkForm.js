@@ -1,6 +1,7 @@
 import React from 'react';
 import './imageLinkForm.css'
 
+// TODO connect "enter" key to detect button trigger
 const ImageLinkForm = ({ onInputChange, onSubmit }) => {
   return (
     <div className='mw5 mw7-ns center tc'>

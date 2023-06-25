@@ -6,7 +6,7 @@ const FaceRecognition = ({ imageURL, boundingBoxes }) => {
     <div className='flex justify-center mt4'>
       <div className='absolute '>
         {
-          // If image not assigned, render nothing
+          // If image not assigned, render blank div
           imageURL === '' ? <div /> :
             <img
               id='inputImage'
@@ -18,14 +18,15 @@ const FaceRecognition = ({ imageURL, boundingBoxes }) => {
         {
           <div>
             {/* Draw each bounding box that exists */}
-            {boundingBoxes.length === 0 ? <div /> :
-              boundingBoxes.map((box, i) => {
-                return (<div
-                  key={i}
-                  className='bounding-box'
-                  style={{ top: box.topRow, right: box.rightCol, bottom: box.bottomRow, left: box.leftCol }} />
-                );
-              })}
+            {
+              boundingBoxes.length === 0 ? <div /> :
+                boundingBoxes.map((box, i) => {
+                  return (<div
+                    key={i}
+                    className='bounding-box'
+                    style={{ top: box.topRow, right: box.rightCol, bottom: box.bottomRow, left: box.leftCol }} />
+                  );
+                })}
           </div>
         }
       </div>

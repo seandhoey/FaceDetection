@@ -1,11 +1,14 @@
 import React from 'react';
 
-const Navigation = () => {
-  return(
-    <nav className='flex pr2'>
+const Navigation = ({ onRouteChange }) => {
+  return (
+    <nav className='flex'>
       {/* TODO Make into button, does signout functionality */}
-      <p className='f3 link dim black pa3 underline pointer'>
-        Sign Out
+      {/* Arrow function required, so that the route change doesnt actually pass a value until onClick happens */}
+      <p
+        onClick={() => onRouteChange('signin')}
+        className='mr3 mt4 mb6 f3 link dim black pointer'>
+        Log Out
       </p>
     </nav>
   );

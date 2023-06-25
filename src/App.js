@@ -7,6 +7,8 @@ import Logo from './components/Logo/Logo.js'
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm.js'
 import FaceRecognition from './components/FaceRecognition/FaceRecognition.js'
 import Rank from './components/Rank/Rank.js'
+import SignIn from './components/SignIn/SignIn.js'
+import Register from './components/Register/Register.js'
 
 class App extends React.Component {
 
@@ -18,7 +20,8 @@ class App extends React.Component {
       imageURL: '',
       boundingBoxes: [],
       // TODO display user feedback
-      userFeedback: ''
+      userFeedback: '',
+      route: 'signin'
     }
   }
 
@@ -46,6 +49,7 @@ class App extends React.Component {
     };
   }
 
+  // Convert percentages to pixel locations of image bounding boxes
   calculateFaceLocation(box) {
     const image = document.getElementById('inputImage');
     return {
@@ -89,23 +93,41 @@ class App extends React.Component {
     }
   }
 
+  // Triggered component sends a new route
+  onRouteChange = (newRoute) => {
+    this.setState({ route: newRoute });
+  }
+
   render() {
+    // Deconstruct some items so we don't keep typing this.state
+    const {route, imageURL, boundingBoxes} = this.state;
     return (
       <div>
         <header className='flex'>
           <Logo />
           <div style={{ flexGrow: '1' }} />
-          <Navigation />
+          {
+            route === 'home'
+              ? <Navigation onRouteChange={this.onRouteChange} />
+              : <div />
+          }
         </header>
-        <section>
-          <Rank />
-          <ImageLinkForm
-            onInputChange={this.onInputChange}
-            onSubmit={this.onSubmit} />
-          <FaceRecognition
-            imageURL={this.state.imageURL}
-            boundingBoxes={this.state.boundingBoxes} />
-        </section>
+        {
+          route === 'signin'
+            ? <SignIn onRouteChange={this.onRouteChange} />
+            : (route === 'register'
+              ? <Register onRouteChange={this.onRouteChange} />
+              : <section>
+                <Rank />
+                <ImageLinkForm
+                  onInputChange={this.onInputChange}
+                  onSubmit={this.onSubmit} />
+                <FaceRecognition
+                  imageURL={imageURL}
+                  boundingBoxes={boundingBoxes} />
+              </section>
+            )
+        }
       </div>
     );
   }
