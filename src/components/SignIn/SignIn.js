@@ -33,8 +33,11 @@ class SignIn extends React.Component {
       })
     })
       .then(response => response.json())
-      .then(data => {
-        if (data === 'Good credentials') {
+      .then(user => {
+        if (user) {
+          // If we received a user back, then our credentials are good.
+          // Updates the App state with the user, and move to home page
+          this.props.loadUser(user);
           this.props.onRouteChange('home');
         }
         else {

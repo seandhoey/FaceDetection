@@ -21,7 +21,14 @@ class App extends React.Component {
       boundingBoxes: [],
       // TODO display user feedback
       userFeedback: '',
-      route: 'signin'
+      route: 'signin',
+      user: {
+        id: 0,
+        name: '',
+        email: '',
+        detectCount: 0,
+        joined: ''
+      }
     }
   }
 
@@ -99,6 +106,18 @@ class App extends React.Component {
     }
   }
 
+  loadUser = (data) => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        detectCount: data.detectCount,
+        joined: data.joined
+      }
+    }, console.log(data));
+  }
+
   // Triggered component sends a new route
   onRouteChange = (newRoute) => {
     this.setState({ route: newRoute });
@@ -120,7 +139,7 @@ class App extends React.Component {
         </header>
         {
           route === 'signin'
-            ? <SignIn onRouteChange={this.onRouteChange} />
+            ? <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
             : (route === 'register'
               ? <Register onRouteChange={this.onRouteChange} />
               : <section>
