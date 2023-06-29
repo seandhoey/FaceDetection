@@ -25,6 +25,12 @@ class App extends React.Component {
     }
   }
 
+  componentDidMount(){
+    fetch('http://localhost:3001/')
+      .then(response => response.json())
+      .then(console.log);
+  }
+
   // Given a URL and the static config, generates a requestOptions object, used in the fetch API
   generateClarifaiRequest(url) {
     const PAT_KEY = '450fdb8a850148248a9815d0e41dc6ae';
