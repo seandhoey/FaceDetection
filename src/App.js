@@ -32,12 +32,6 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount(){
-    fetch('http://localhost:3001/')
-      .then(response => response.json())
-      .then(console.log);
-  }
-
   // Given a URL and the static config, generates a requestOptions object, used in the fetch API
   generateClarifaiRequest(url) {
     const PAT_KEY = '450fdb8a850148248a9815d0e41dc6ae';
@@ -74,12 +68,10 @@ class App extends React.Component {
   }
 
   onInputChange = (event) => {
-    // The second arg to setState executes once the asynchronous first part has completed
-    // this.setState({ input: event.target.value }, () => console.log(this.state.input));
     this.setState({ input: event.target.value });
   }
 
-  onSubmit = async () => {
+  onSubmitDetect = async () => {
     const url = this.state.input;
 
     // TODO check if valid image exists
@@ -96,6 +88,16 @@ class App extends React.Component {
           return this.calculateFaceLocation(region.region_info.bounding_box);
         });
         this.setState({ boundingBoxes: boundingBoxes });
+        const detectResponse = await fetch('http://localhost:3001/detect', {
+          method: 'put',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: this.state.user.id
+          })
+        });
+        const jsonDetectResponse = await detectResponse.json();
+        // Copy existing user properties, only update detectCount
+        this.setState(Object.assign(this.state.user, { detectCount: jsonDetectResponse }));
       }
       catch (error) {
         this.setState({ userFeedback: 'No faces found' })
@@ -115,7 +117,20 @@ class App extends React.Component {
         detectCount: data.detectCount,
         joined: data.joined
       }
-    }, console.log(data));
+    });
+  }
+
+  logOut = () => {
+    this.setState({
+      user: {
+        id: 0,
+        name: '',
+        email: '',
+        detectCount: 0,
+        joined: ''
+      }
+    });
+    this.onRouteChange('signin');
   }
 
   // Triggered component sends a new route
@@ -125,7 +140,7 @@ class App extends React.Component {
 
   render() {
     // Deconstruct some items so we don't keep typing this.state
-    const {route, imageURL, boundingBoxes} = this.state;
+    const { user, route, imageURL, boundingBoxes } = this.state;
     return (
       <div>
         <header className='flex'>
@@ -133,20 +148,24 @@ class App extends React.Component {
           <div style={{ flexGrow: '1' }} />
           {
             route === 'home'
-              ? <Navigation onRouteChange={this.onRouteChange} />
+              ? <Navigation logOut={this.logOut} />
               : <div />
           }
         </header>
         {
           route === 'signin'
-            ? <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
+            ? <SignIn
+              onRouteChange={this.onRouteChange}
+              loadUser={this.loadUser} />
             : (route === 'register'
               ? <Register onRouteChange={this.onRouteChange} />
               : <section>
-                <Rank />
+                <Rank
+                  name={user.name}
+                  detectCount={user.detectCount} />
                 <ImageLinkForm
                   onInputChange={this.onInputChange}
-                  onSubmit={this.onSubmit} />
+                  onSubmitDetect={this.onSubmitDetect} />
                 <FaceRecognition
                   imageURL={imageURL}
                   boundingBoxes={boundingBoxes} />

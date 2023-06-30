@@ -23,7 +23,7 @@ class SignIn extends React.Component {
   }
 
   onSubmitSignIn = () => {
-    console.log(this.props);
+    // TODO validate fields
     fetch('http://localhost:3001/signin', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -34,14 +34,15 @@ class SignIn extends React.Component {
     })
       .then(response => response.json())
       .then(user => {
-        if (user) {
+        // Use lazy evaluation to avoid error --> TODO check this
+        if (user.id && user.id > 0) {
           // If we received a user back, then our credentials are good.
           // Updates the App state with the user, and move to home page
           this.props.loadUser(user);
           this.props.onRouteChange('home');
         }
         else {
-          console.log("bad");
+          console.log("Login Failed");
           // TODO display login failure message
         }
       })

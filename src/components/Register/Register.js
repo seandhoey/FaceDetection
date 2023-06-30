@@ -28,7 +28,7 @@ class Register extends React.Component {
   }
 
   onSubmitRegister = () => {
-    console.log(this.props);
+    // TODO validate fields
     fetch('http://localhost:3001/register', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
