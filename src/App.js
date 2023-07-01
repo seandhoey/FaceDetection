@@ -26,7 +26,7 @@ class App extends React.Component {
         id: 0,
         name: '',
         email: '',
-        detectCount: 0,
+        entries: 0,
         joined: ''
       }
     }
@@ -96,8 +96,8 @@ class App extends React.Component {
           })
         });
         const jsonDetectResponse = await detectResponse.json();
-        // Copy existing user properties, only update detectCount
-        this.setState(Object.assign(this.state.user, { detectCount: jsonDetectResponse }));
+        // Copy existing user properties, only update entries
+        this.setState(Object.assign(this.state.user, { entries: jsonDetectResponse }));
       }
       catch (error) {
         this.setState({ userFeedback: 'No faces found' })
@@ -114,7 +114,7 @@ class App extends React.Component {
         id: data.id,
         name: data.name,
         email: data.email,
-        detectCount: data.detectCount,
+        entries: data.entries,
         joined: data.joined
       }
     });
@@ -126,7 +126,7 @@ class App extends React.Component {
         id: 0,
         name: '',
         email: '',
-        detectCount: 0,
+        entries: 0,
         joined: ''
       }
     });
@@ -162,7 +162,7 @@ class App extends React.Component {
               : <section>
                 <Rank
                   name={user.name}
-                  detectCount={user.detectCount} />
+                  entries={user.entries} />
                 <ImageLinkForm
                   onInputChange={this.onInputChange}
                   onSubmitDetect={this.onSubmitDetect} />

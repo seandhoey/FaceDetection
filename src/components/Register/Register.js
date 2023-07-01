@@ -39,12 +39,12 @@ class Register extends React.Component {
       })
     })
       .then(response => response.json())
-      .then(user => {
-        if (user) {
+      .then(jsonResp => {
+        if (jsonResp === 'Registered') {
           this.props.onRouteChange('signin');
         }
         else {
-          console.log("bad");
+          console.log(jsonResp);
           // TODO display login failure message
         }
       })
