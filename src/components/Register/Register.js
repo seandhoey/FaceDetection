@@ -28,8 +28,11 @@ class Register extends React.Component {
   }
 
   onSubmitRegister = () => {
+    const SERVER = 'https://facedetectionapi.onrender.com';
+    // const SERVER = 'http://localhost:3001';
+
     // TODO validate fields
-    fetch('http://localhost:3001/register', {
+    fetch(SERVER + '/register', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -10,6 +10,10 @@ import Rank from '../components/Rank/Rank.js'
 import SignIn from '../components/SignIn/SignIn.js'
 import Register from '../components/Register/Register.js'
 
+// Also in login and register components
+const SERVER = 'https://facedetectionapi.onrender.com';
+// const SERVER = 'http://localhost:3001';
+
 const initialState = {
   input: '',
   imageURL: '',
@@ -60,7 +64,7 @@ class App extends React.Component {
 
       // Send image dimensions and URL to our server. 
       // Get back a bounding box.
-      const clarifaiResponse = await fetch('http://localhost:3001/facedetect', {
+      const clarifaiResponse = await fetch(SERVER + '/facedetect', {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -75,7 +79,7 @@ class App extends React.Component {
         const boundingBoxes = await clarifaiResponse.json();
         this.setState({ boundingBoxes: boundingBoxes });
         // Image and BoundingBoxes appear good, so increment detection
-        const detectResponse = await fetch('http://localhost:3001/detect', {
+        const detectResponse = await fetch(SERVER + '/detect', {
           method: 'put',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -134,10 +138,13 @@ class App extends React.Component {
         {
           route === 'signin'
             ? <SignIn
+              SERVER={this.SERVER}
               onRouteChange={this.onRouteChange}
               loadUser={this.loadUser} />
             : (route === 'register'
-              ? <Register onRouteChange={this.onRouteChange} />
+              ? <Register
+                SERVER={this.SERVER}
+                onRouteChange={this.onRouteChange} />
               : <section>
                 <Rank
                   name={user.name}

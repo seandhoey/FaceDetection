@@ -23,8 +23,11 @@ class SignIn extends React.Component {
   }
 
   onSubmitSignIn = () => {
+    const SERVER = 'https://facedetectionapi.onrender.com';
+    // const SERVER = 'http://localhost:3001';
+    
     // TODO validate fields
-    fetch('http://localhost:3001/signin', {
+    fetch(SERVER + '/signin', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
